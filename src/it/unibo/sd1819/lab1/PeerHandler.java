@@ -15,12 +15,13 @@ public class PeerHandler extends ActiveObject {
 	}
 	
 	protected void onBegin () throws Exception {
-	// do something here
+		peerInputStream = new ObjectInputStream(peer.getInputStream());
 	}
 	
 	protected void loop () throws Exception {
 		try {
-			Message message = new Message("", "");// read a Message obj from the socket ;
+			// read a Message obj from the socket ;
+			Message message = (Message) peerInputStream.readObject();
 			log(message.toString());
 		} catch ( StreamCorruptedException e) {
 			/* Silently ignores */ 

@@ -46,7 +46,15 @@ public class ConnectionHandler extends ActiveObject {
 		.map(PeerHandler :: new)
 		.collect( Collectors.toList());
 		peers = Collections.synchronizedList (peers);
+		
 		// start all active objects created so far
+		
+		outputHandler = new OutputHandler(peers);
+		inputHandler = new InputHandler(username, outputHandler);
+		
+		outputHandler.start();
+		inputHandler.start();
+
 		server = new ServerSocket(port);
 	}
 	
@@ -58,7 +66,9 @@ public class ConnectionHandler extends ActiveObject {
 			PeerHandler peer = new PeerHandler ( socket );
 			peer.start ();
 			peers.add ( peer );
+			
 			// inform the output handler
+			outputHandler.notifyConnected(peer);
 		} catch ( SocketException e) {
 			// Socket closed , silently ignores
 		}

@@ -21,9 +21,10 @@ public class App {
 				.map(TransportAddress::parse)
 				.collect(Collectors.toList());
 		
-		//
+		/*Start ConnectionHandler which will be responsible of the maintaining of the connection between peers*/
+		ConnectionHandler connectionHandler = new ConnectionHandler(username, port, peerAddresses);
+		connectionHandler.start();
 		
-		// do something
 		System.out.printf("Hello %s@localhost:%s, your peers are %s\n", username, port, peerAddresses);
 	} 
 

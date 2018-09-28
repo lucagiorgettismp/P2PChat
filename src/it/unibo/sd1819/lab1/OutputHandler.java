@@ -19,21 +19,23 @@ public class OutputHandler extends ActiveObject {
 	}
 	
 	public void handle ( Message message ) {
-	// add a message to the queue
+		// add a message to the queue
+		messageQueue.add(message);
 	}
 	
-	public void notifyDisconnected ( PeerHandler peer ) { /* do
-	something */ 
+	public void notifyDisconnected ( PeerHandler peer ) { 
+		peers.remove(peer);
 		
 	}
 	
-	public void notifyConnected ( PeerHandler peer ) { /* do something
-	*/
-
+	public void notifyConnected ( PeerHandler peer ) { 
+		peers.add(peer);
 	}
 	protected void loop () throws Exception {
-		Message message = new Message("", "");// get a message from the queue
-		
+		// get a message from the queue
+		// Il metodo poll() dovrebbe prendere e togliere il primo elemento della lista	
+		Message message = messageQueue.poll();
+
 		// why synchornized ?
 		synchronized (peers ) {
 			for ( PeerHandler peer:peers ) {
