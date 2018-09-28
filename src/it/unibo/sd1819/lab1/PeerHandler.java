@@ -29,7 +29,6 @@ public class PeerHandler extends ActiveObject {
 	
 	public Socket getSocket () { 
 		return peer ;
-		peer.getInputStream()
 	}
 	
 	@Override
