@@ -10,19 +10,22 @@ public class InputHandler extends ActiveObject {
 	private final String username ;
 	private final OutputHandler outputHandler ;
 	private BufferedReader input ;
-	public InputHandler(String username , OutputHandler outputHandler)
-	{ 
+	
+	public InputHandler(String username , OutputHandler outputHandler) { 
 		this.username = username;
 		this.outputHandler = outputHandler;
 	}
+	
 	protected void onBegin () throws Exception {
 		input = new BufferedReader(new InputStreamReader(System.in));
 	}
+	
 	protected void loop () throws Exception {
 		// read a line from stdin
 		String payload = input.readLine();
-		outputHandler.handle (new Message ( username , payload ));
+		outputHandler.handle(new Message( username , payload ));
 	}
+	
 	@Override
 	protected void onEnd() {
 		try {
@@ -32,6 +35,5 @@ public class InputHandler extends ActiveObject {
 			e.printStackTrace();
 		}
 		// TODO Auto-generated method stub
-		
 	}
 }

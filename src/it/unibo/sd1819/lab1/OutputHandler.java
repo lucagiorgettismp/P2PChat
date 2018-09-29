@@ -8,41 +8,41 @@ import java.util.concurrent.LinkedBlockingQueue;
 import it.unibo.sd1819.lab1.utils.Message;
 
 public class OutputHandler extends ActiveObject {
-	private final List < PeerHandler > peers ;
+	private final List<PeerHandler> peers ;
 	// why Blocking ?
-	private final BlockingQueue < Message > messageQueue = new
-	LinkedBlockingQueue < >();
+	private final BlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
 	
-	public OutputHandler (List < PeerHandler > peers ) {
+	public OutputHandler (List <PeerHandler> peers ) {
 		// why syncronized ?
-		this.peers = Collections . synchronizedList ( peers );
+		this.peers = Collections.synchronizedList(peers);
 	}
 	
-	public void handle ( Message message ) {
+	public void handle (Message message) {
 		// add a message to the queue
 		messageQueue.add(message);
 	}
 	
-	public void notifyDisconnected ( PeerHandler peer ) { 
+	public void notifyDisconnected(PeerHandler peer) { 
 		peers.remove(peer);
 		
 	}
 	
-	public void notifyConnected ( PeerHandler peer ) { 
+	public void notifyConnected(PeerHandler peer) { 
 		peers.add(peer);
 	}
-	protected void loop () throws Exception {
+	
+	protected void loop() throws Exception {
 		// get a message from the queue
 		// Il metodo poll() dovrebbe prendere e togliere il primo elemento della lista	
 		Message message = messageQueue.poll();
 
 		// why synchornized ?
-		synchronized (peers ) {
-			for ( PeerHandler peer:peers ) {
+		synchronized(peers) {
+			for (PeerHandler peer:peers) {
 			// send message to peer
 			}
 		}
-		System.out.println(message);
+		//System.out.println(message);
 	}
 		
 	@Override

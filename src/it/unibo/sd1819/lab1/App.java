@@ -4,9 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import it.unibo.sd1819.lab1.controller.Controller;
 import it.unibo.sd1819.lab1.utils.TransportAddress;
 import it.unibo.sd1819.lab1.view.ChatView;
 import javafx.application.Application;
+import javafx.stage.Stage;
 
 public class App {
 
@@ -29,7 +31,11 @@ public class App {
 		
 		System.out.printf("Hello %s@localhost:%s, your peers are %s\n", username, port, peerAddresses);
 		
-		Application.launch(ChatView.class);
-	} 
+		
+//		ChatView view = new ChatView();
+//		Controller controller = new Controller(view);
+//		view.setController(controller);
+//		view.showView();
+	}
 
 }

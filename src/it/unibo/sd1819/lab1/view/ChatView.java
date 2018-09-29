@@ -50,6 +50,13 @@ public class ChatView extends Application {
         primaryStage.show();
 	}
 	
+	/**
+	 * Launch view.
+	 */
+	public void showView() {
+		ChatView.launch();
+	}
+	
 	public void setController(ControllerView controller) {
 		this.controller = Optional.ofNullable(controller);
 	}
@@ -142,8 +149,11 @@ public class ChatView extends Application {
 		    // Button was clicked, do something...
 			String message = this.inputField.getText();
 			if(!(message == null || message.replaceAll(" ","").length() <= 0)) {
-				if(controller.isPresent()) controller.get().sendMessage(message);
-				else showErrorDialog("La view non ha il controller,"+ ViewUtils.NEW_LINE +"forse è il caso di passarglierlo");
+				if(controller.isPresent()) {
+					controller.get().sendMessage(message);
+				} else {
+					showErrorDialog("La view non ha il controller,"+ ViewUtils.NEW_LINE +"forse è il caso di passarglierlo");
+				}
 			} else {
 				showErrorDialog("Perfavore inserisci un messaggio...");
 			}
