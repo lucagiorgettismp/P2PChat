@@ -63,6 +63,7 @@ public class ConnectionHandler extends ActiveObject {
 		//TODO:Try catch da sistemare?
 		try {
 			Socket socket = this.server.accept(); // wait for incoming connections
+			System.out.println(socket.getInetAddress());
 			log(" Connected to peer %s:%d", socket.getInetAddress());
 			PeerHandler peer = new PeerHandler(socket);
 			peer.start();
