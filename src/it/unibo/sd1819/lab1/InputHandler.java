@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import it.unibo.sd1819.lab1.utils.Const;
 import it.unibo.sd1819.lab1.utils.Message;
 
 public class InputHandler extends ActiveObject {
@@ -21,9 +22,12 @@ public class InputHandler extends ActiveObject {
 	}
 	
 	protected void loop () throws Exception {
-		// read a line from stdin
-		String payload = input.readLine();
-		outputHandler.handle(new Message( username , payload ));
+		String payload = input.readLine(); // read a line from stdin
+		if (payload.equals(Const.EXIT_COMMAND)){
+			System.exit(0);
+		} else if (!payload.replace(" ", "").isEmpty()) {
+			outputHandler.handle(new Message( username, payload));
+		}
 	}
 	
 	@Override
@@ -31,9 +35,7 @@ public class InputHandler extends ActiveObject {
 		try {
 			input.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
 	}
 }

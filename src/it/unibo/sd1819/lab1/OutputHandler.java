@@ -1,7 +1,6 @@
 package it.unibo.sd1819.lab1;
 
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.net.SocketException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -20,35 +19,40 @@ public class OutputHandler extends ActiveObject {
 	}
 	
 	public void handle (Message message) {
-		// add a message to the queue
-		messageQueue.add(message);
+		try {
+			//try to add message into queue, if there isn't any free space wait
+			messageQueue.put(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void notifyDisconnected(PeerHandler peer) { 
 		peers.remove(peer);
-		
+		peer.stop();
 	}
 	
 	public void notifyConnected(PeerHandler peer) { 
-		peers.add(peer);
+		this.peers.add(peer);
 	}
 	
 	protected void loop() throws Exception {
-		// get a message from the queue
-		// Il metodo poll() dovrebbe prendere e togliere il primo elemento della lista	
-		if(!messageQueue.isEmpty()) {
-			Message message = messageQueue.poll();
-
-			// TODO: why synchornized ?
-			synchronized(peers) {
-				for (PeerHandler peer:peers) {
-					//send message to peer
-					ObjectOutputStream os = new ObjectOutputStream(peer.getSocket().getOutputStream());
-					os.writeObject(message);
+		Message message = this.messageQueue.take();
+		// TODO: why synchronized ?
+		synchronized(peers) {
+			for (PeerHandler peer:peers) {
+				//send message to peer
+				//TODO: rimuovere stampa una volta finito tutto.
+				System.out.println("Invio il messaggio a: " + peer.getSocket().getInetAddress().getHostAddress() + " la porta è: " + peer.getSocket().getPort());
+				try {
+					peer.getPeerOutputStream().writeObject(message);
+				} catch(SocketException e) {
+					e.printStackTrace();
 				}
+
 			}
-			System.out.println(message);
 		}
+		System.out.println(message);
 	}
 		
 	@Override
@@ -59,7 +63,7 @@ public class OutputHandler extends ActiveObject {
 	
 	@Override
 	protected void onEnd() {
-		// TODO Auto-generated method stub
-		
+		//clean resources
+		peers.forEach(PeerHandler::stop);
 	}
 }
