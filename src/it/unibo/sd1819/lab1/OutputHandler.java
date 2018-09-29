@@ -1,5 +1,7 @@
 package it.unibo.sd1819.lab1;
 
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -34,15 +36,19 @@ public class OutputHandler extends ActiveObject {
 	protected void loop() throws Exception {
 		// get a message from the queue
 		// Il metodo poll() dovrebbe prendere e togliere il primo elemento della lista	
-		Message message = messageQueue.poll();
+		if(!messageQueue.isEmpty()) {
+			Message message = messageQueue.poll();
 
-		// why synchornized ?
-		synchronized(peers) {
-			for (PeerHandler peer:peers) {
-			// send message to peer
+			// TODO: why synchornized ?
+			synchronized(peers) {
+				for (PeerHandler peer:peers) {
+					//send message to peer
+					ObjectOutputStream os = new ObjectOutputStream(peer.getSocket().getOutputStream());
+					os.writeObject(message);
+				}
 			}
+			System.out.println(message);
 		}
-		//System.out.println(message);
 	}
 		
 	@Override

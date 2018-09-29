@@ -1,11 +1,8 @@
 package it.unibo.sd1819.lab1;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.channels.ConnectionPendingException;
-import java.nio.channels.SocketChannel;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,8 +60,7 @@ public class ConnectionHandler extends ActiveObject {
 		//TODO:Try catch da sistemare?
 		try {
 			Socket socket = this.server.accept(); // wait for incoming connections
-			System.out.println(socket.getInetAddress());
-			log(" Connected to peer %s:%d", socket.getInetAddress());
+			log(" Connected to peer %s:%d", socket.getInetAddress(), socket.getPort());
 			PeerHandler peer = new PeerHandler(socket);
 			peer.start();
 			peers.add(peer);
