@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import it.unibo.sd1819.lab1.utils.TransportAddress;
+import it.unibo.sd1819.lab1.view.ChatView;
+import javafx.application.Application;
 
 public class App {
 
@@ -26,6 +28,8 @@ public class App {
 		connectionHandler.start();
 		
 		System.out.printf("Hello %s@localhost:%s, your peers are %s\n", username, port, peerAddresses);
+		
+		Application.launch(ChatView.class);
 	} 
 
 }
