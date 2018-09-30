@@ -46,8 +46,9 @@ public class OutputHandler extends ActiveObject {
 				System.out.println("Invio il messaggio a: " + peer.getSocket().getInetAddress().getHostAddress() + " la porta è: " + peer.getSocket().getPort());
 				try {
 					peer.getPeerOutputStream().writeObject(message);
-				} catch(SocketException e) {
-					e.printStackTrace();
+				} 
+				catch(SocketException e) {
+					System.out.println("Impossibile inviare il messaggio: " + e.getMessage());
 				}
 
 			}
