@@ -29,8 +29,8 @@ public class OutputHandler extends ActiveObject {
 	}
 	
 	public void notifyDisconnected(PeerHandler peer) { 
-		peers.remove(peer);
 		peer.stop();
+		peers.remove(peer);
 	}
 	
 	public void notifyConnected(PeerHandler peer) { 
@@ -47,7 +47,7 @@ public class OutputHandler extends ActiveObject {
 				toRemove.add(peer);
 			}
 		}
-		toRemove.forEach(p -> this.peers.remove(p));
+		toRemove.forEach(p -> notifyDisconnected(p));
 		System.out.println(message);
 	}
 		
