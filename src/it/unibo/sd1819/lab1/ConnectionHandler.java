@@ -62,8 +62,6 @@ public class ConnectionHandler extends ActiveObject {
 			log(" Connected to peer %s:%d", socket.getInetAddress(), socket.getPort());
 			PeerHandler peer = new PeerHandler(socket);
 			peer.start();
-			//TODO: controllare perchè aggiungendo questo il peer viene aggiunto due volte
-			//peers.add(peer);
 			// inform the output handler
 			this.outputHandler.notifyConnected(peer);
 		} catch (SocketException e) {
@@ -72,8 +70,5 @@ public class ConnectionHandler extends ActiveObject {
 	}
 	
 	@Override
-	protected void onEnd() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void onEnd() {}
 }

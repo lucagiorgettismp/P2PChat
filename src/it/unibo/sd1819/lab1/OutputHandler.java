@@ -2,6 +2,7 @@ package it.unibo.sd1819.lab1;
 
 import java.net.SocketException;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,29 +39,20 @@ public class OutputHandler extends ActiveObject {
 	
 	protected void loop() throws Exception {
 		Message message = this.messageQueue.take();
-		// TODO: why synchronized ?
-		synchronized(peers) {
-			for (PeerHandler peer:peers) {
-				//send message to peer
-				//TODO: rimuovere stampa una volta finito tutto.
-				System.out.println("Invio il messaggio a: " + peer.getSocket().getInetAddress().getHostAddress() + " la porta è: " + peer.getSocket().getPort());
-				try {
-					peer.getPeerOutputStream().writeObject(message);
-				} 
-				catch(SocketException e) {
-					System.out.println("Impossibile inviare il messaggio: " + e.getMessage());
-				}
-
+		List<PeerHandler> toRemove = new LinkedList<PeerHandler>();
+		for (PeerHandler peer:peers) {
+			try {
+				peer.getPeerOutputStream().writeObject(message);
+			} catch(SocketException e) {
+				toRemove.add(peer);
 			}
 		}
+		toRemove.forEach(p -> this.peers.remove(p));
 		System.out.println(message);
 	}
 		
 	@Override
-	protected void onBegin() throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void onBegin() throws Exception {}
 	
 	@Override
 	protected void onEnd() {
